@@ -1,0 +1,32 @@
+{
+  "name": "food-recipe-app",
+  "version": "1.0.0",
+  "description": "food recipe app that generates a recipe based of user input",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ClarkPhan/food-recipe-app.git"
+  },
+  "keywords": [
+    "food",
+    "recipe",
+    "app"
+  ],
+  "author": "Team Four",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ClarkPhan/food-recipe-app/issues"
+  },
+  "homepage": "https://github.com/ClarkPhan/food-recipe-app#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "mysql2": "^1.5.1",
+    "sequelize": "^4.31.2"
+  }
+}
