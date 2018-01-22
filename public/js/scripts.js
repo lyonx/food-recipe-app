@@ -49,8 +49,9 @@ function getResults() {
   console.log(data);
 };
 
-
 // Remove ingredients inputted by user on click
 $(document).on('click', '.ingredients', function () {
   $(this).remove();
 });
+
+// test
