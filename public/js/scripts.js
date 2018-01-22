@@ -18,15 +18,15 @@ function addIngredient(event) {
   event.preventDefault();
 
   let ingredient = $("#ing").val().trim();
-  client.push(ingredient);
+  client.ingredients.push(ingredient);
   console.log(ingredient);
 
-  let newDiv = $("<div>");
+  let newDiv = $("<button>");
 
-  newDiv.attr("id", "ingredient-" + count);
+  newDiv.attr("id", "ingredient-" + client.count);
   newDiv.addClass("ingredients");
 
-  count++;
+  client.count++;
 
   newDiv.append(ingredient);
 
@@ -36,11 +36,17 @@ function addIngredient(event) {
 function getResults() {
   event.preventDefault();
 
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < client.count; i++) {
 
-    let target = "#ingredient-" + count;
+    let target = "#ingredient-" + client.count;
 
     let ing = $(target).val();
-    console.log(client.ingredients);
   };
+  console.log(client.ingredients);
 };
+
+
+// Remove ingredients inputted by user on click
+$(document).on('click', '.ingredients', function() {
+  $(this).remove();
+});
