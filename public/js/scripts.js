@@ -23,6 +23,10 @@ function addIngredient(event) {
 
   let newDiv = $("<button>");
 
+<<<<<<< HEAD
+=======
+  newDiv.attr("id", "ingredient-" + client.count);
+>>>>>>> master
   newDiv.addClass("ingredients");
   newDiv.attr("id", client.count);
   newDiv.attr("value", ingredient);
@@ -39,6 +43,22 @@ function getResults() {
   console.log(client.ingredients);
 
   for (let i = 0; i < client.count; i++) {
+<<<<<<< HEAD
     console.log($("#" + i).val());
   }
 };
+=======
+
+    let target = "#ingredient-" + client.count;
+
+    let ing = $(target).val();
+  };
+  console.log(client.ingredients);
+};
+
+
+// Remove ingredients inputted by user on click
+$(document).on('click', '.ingredients', function() {
+  $(this).remove();
+});
+>>>>>>> master
