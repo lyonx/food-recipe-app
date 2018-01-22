@@ -41,8 +41,9 @@ function getResults() {
   };
 
   for (let i = 0; i < count; i++) {
-
-    data.ingredients.push($("#" + i).val())
+    if ($("#" + i).val()) {
+      data.ingredients.push($("#" + i).val());
+    }
   };
 
   console.log(data);
