@@ -25,7 +25,7 @@ function addIngredient(event) {
 
   newDiv.addClass("ingredients");
   newDiv.attr("id", client.count);
-  newDiv.attr("id", client.count);
+  newDiv.attr("value", ingredient);
 
   client.count++;
 
@@ -37,10 +37,8 @@ function addIngredient(event) {
 function getResults() {
   event.preventDefault();
   console.log(client.ingredients);
+
   for (let i = 0; i < client.count; i++) {
-    console.log("hi");
-    let x = i.toString();
-    console.log(x);
-    console.log($(`#${x}`).val());
+    console.log($("#" + i).val());
   }
 };
