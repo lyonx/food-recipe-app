@@ -53,12 +53,6 @@ function getResults() {
 $(document).on('click', '.ingredients', function() {
   console.log('click');
   $(this).remove();
-<<<<<<< HEAD
 
   //$(this).html('newText');
 });
-=======
-});
-
-// test
->>>>>>> master
