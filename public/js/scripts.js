@@ -18,15 +18,16 @@ function addIngredient(event) {
   event.preventDefault();
 
   let ingredient = $("#ing").val().trim();
-  client.push(ingredient);
+  client.ingredients.push(ingredient);
   console.log(ingredient);
 
-  let newDiv = $("<div>");
+  let newDiv = $("<button>");
 
-  newDiv.attr("id", "ingredient-" + count);
   newDiv.addClass("ingredients");
+  newDiv.attr("id", client.count);
+  newDiv.attr("id", client.count);
 
-  count++;
+  client.count++;
 
   newDiv.append(ingredient);
 
@@ -35,12 +36,11 @@ function addIngredient(event) {
 
 function getResults() {
   event.preventDefault();
-
-  for (let i = 0; i < count; i++) {
-
-    let target = "#ingredient-" + count;
-
-    let ing = $(target).val();
-    console.log(client.ingredients);
-  };
+  console.log(client.ingredients);
+  for (let i = 0; i < client.count; i++) {
+    console.log("hi");
+    let x = i.toString();
+    console.log(x);
+    console.log($(`#${x}`).val());
+  }
 };

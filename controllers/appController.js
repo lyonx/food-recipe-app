@@ -1,3 +1,9 @@
-var express = require("express");
-var router = express.Router();
-var burger = require("../models/burger.js");
+var db = require("../models");
+
+
+module.exports = function (app) {
+
+    app.get("/", function (req, res) {
+       res.send("test"); 
+    });
+}
