@@ -14,6 +14,10 @@ request(query, function(err, res, bod) {
 
   // If the request is successful (i.e. if the response status code is 200)
   if (!err && res.statusCode === 200) {
-    console.log(JSON.parse(bod));
+    // Matches is an array with 10 recipes
+    var response = JSON.parse(bod);
+    for (var i = 0; i < response.matches.length; i++) {
+      console.log(response.matches[i].id);
+    }
   }
 });
