@@ -24,6 +24,7 @@
   "homepage": "https://github.com/ClarkPhan/food-recipe-app#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
     "mysql2": "^1.5.1",
