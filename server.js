@@ -48,7 +48,7 @@ app.use(router);
 
 app.use(expressJWT({ secret: config.tokenSecret }).unless({ 
     // select paths to not be authorized
-    path: ["/user/login", "/user/new", "/api/ingredients/all"] 
+    path: ["/user/login", "/user/new", "/api/ingredients/all", "/api/recipes", "/api/recipes/all"] 
 }));
 var routes = require("./controllers/api-routes.js");
 
