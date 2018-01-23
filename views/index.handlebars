@@ -7,6 +7,14 @@
             </div>
             <button type="submit" class="btn btn-default" id="add-ing">Add ingredient</button>
         </form>
+        <form ref='uploadForm' 
+            id='uploadForm' 
+            action='http://localhost:3300/upload' 
+            method='post' 
+            encType="multipart/form-data">
+            <input type="file" name="uploadedIngredient" />
+            <input type='submit' value='Upload!' />
+        </form> 
     </div>
 </div>
 <div class="container">

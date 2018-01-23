@@ -128,6 +128,7 @@ function populate() {
 }
 
 // Remove ingredients inputted by user on click
+
 $(document).on('click', '.ingredients', function () {
   var data = {
     UserId: localStorage.getItem('id'),
@@ -141,3 +142,4 @@ $(document).on('click', '.ingredients', function () {
     location.reload();
   });
 });
+
