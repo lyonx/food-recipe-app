@@ -47,12 +47,18 @@ function getResults() {
   };
 
   console.log(data);
+
+  $.ajax({
+    method: "POST",
+    url: "/api/ingredients",
+    data: data
+  }).done(function(res) {
+    console.log(res);
+  });
 };
 
 // Remove ingredients inputted by user on click
 $(document).on('click', '.ingredients', function() {
   console.log('click');
   $(this).remove();
-
-  //$(this).html('newText');
 });
