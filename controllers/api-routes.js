@@ -7,6 +7,11 @@ var router = express.Router();
 // For AJAX request calls
 var request = require("request");
 
+<<<<<<< HEAD
+
+
+function yummlyIngredientSearch(ingredientArr) {
+=======
 router.post("/api/ingredients", function (routeReq, routeRes) {
 
   var ingredients = routeReq.body.ingredients;
@@ -14,6 +19,7 @@ router.post("/api/ingredients", function (routeReq, routeRes) {
 });
 
 function yummlyIngredientSearch(ingredientArr, routeRes) {
+>>>>>>> master
   // To search recipes with associated ingredients
   var allowedIngredients = "";
   for (var i = 0; i < ingredientArr.length; i++) {
