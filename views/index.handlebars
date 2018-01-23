@@ -7,18 +7,15 @@
             </div>
             <button type="submit" class="btn btn-default" id="add-ing">Add ingredient</button>
         </form>
-        <form ref='uploadForm' 
-            id='uploadForm' 
-            action='http://localhost:3300/upload' 
-            method='post' 
-            encType="multipart/form-data">
+        <form ref='uploadForm' id='uploadForm' action='http://localhost:3300/' method='post' encType="multipart/form-data">
             <input type="file" name="uploadedIngredient" />
             <input type='submit' value='Upload!' />
-        </form> 
+        </form>
     </div>
 </div>
 <div class="container">
     <div class="row" id="ing-row">
+        {{#each imageArr}}<button class="ingredients">{{this}}</button> {{/each}}
     </div>
 </div>
 <div class="container">
