@@ -1,5 +1,5 @@
 // Read and set environment variables
-var dotenv = require("dotenv").config();
+require("dotenv").config();
 
 var express = require("express");
 var router = express.Router();
@@ -7,9 +7,19 @@ var router = express.Router();
 // For AJAX request calls
 var request = require("request");
 
+<<<<<<< HEAD
 
 
 function yummlyIngredientSearch(ingredientArr) {
+=======
+router.post("/api/ingredients", function (routeReq, routeRes) {
+
+  var ingredients = routeReq.body.ingredients;
+  yummlyIngredientSearch(ingredients, routeRes);
+});
+
+function yummlyIngredientSearch(ingredientArr, routeRes) {
+>>>>>>> master
   // To search recipes with associated ingredients
   var allowedIngredients = "";
   for (var i = 0; i < ingredientArr.length; i++) {
@@ -46,14 +56,14 @@ function yummlyIngredientSearch(ingredientArr) {
       queryArr.push(query);
     }
     console.log(queryArr);
-    yummlyRecipeSearch(queryArr);
+    yummlyRecipeSearch(queryArr, routeRes);
     // yummlyRecipeSearch(queryArr, function(data){
     //   console.log(data);
     // });
   });
 }
 
-function yummlyRecipeSearch(queryArr) {
+function yummlyRecipeSearch(queryArr, routeRes) {
   // Holds links to our recipe
   var recipeLinksArr = [];
   for (var i = 0; i < 1; i++) {
@@ -61,7 +71,6 @@ function yummlyRecipeSearch(queryArr) {
       if (!err && res.statusCode === 200) {
         var response = JSON.parse(bod);
         recipeLinksArr.push(response.source.sourceRecipeUrl);
-
         // console.log(i, queryArr.length);
         // if (i === queryArr.length) {
         //   cb(recipeLinksArr);
@@ -73,6 +82,7 @@ function yummlyRecipeSearch(queryArr) {
   // Wait 3 seconds for array to populate and then log data
   sleep(3000).then(() => {
     console.log(recipeLinksArr);
+    routeRes.json(recipeLinksArr);
   });
 }
 
@@ -84,6 +94,9 @@ function sleep(time) {
 }
 
 
-var ingredientArr = ["chicken", "pasta"];
-yummlyIngredientSearch(ingredientArr);
+module.exports = router;
+
+// TESTING
+// var ingredientArr = ["chicken", "pasta"];
+// yummlyIngredientSearch(ingredientArr);
 

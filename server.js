@@ -22,6 +22,7 @@ app.set("view engine", "handlebars");
 app.use(express.static("public"));
 
 require('./controllers/html-routes')(app);
+<<<<<<< HEAD
 var router = require('./controllers/appController');
 app.use(router);
 
@@ -29,6 +30,11 @@ app.use(expressJWT({ secret: config.tokenSecret }).unless({
     // select paths to not be authorized
     path: ["/user/login", "/user/new"] 
 }));
+=======
+var routes = require("./controllers/api-routes.js");
+
+app.use(routes);
+>>>>>>> master
 
 db.sequelize.sync().then(function () {
     app.listen(PORT, function () {
