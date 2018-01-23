@@ -9,8 +9,10 @@ $(function () {
 
   $('#get-results').on("click", getResults);
 
-  populate();
+  // $("#recipe").on("click",)
 
+  populate();
+  populateRec();
 });
 
 // // adds ingredient to html
@@ -70,10 +72,16 @@ function getResults() {
 
   $.ajax({
     method: "POST",
-    url: "/api/ingredients",
+    url: "/api/recipes",
     data: data
   }).done(function (res) {
     console.log(res);
+
+    // var newDiv = $("<a>");
+    // newDiv.addClass("recipe");
+    // newDiv.text(res.name);
+    // newDiv.attr("href", res.url);
+    // $("#rec-row").append(newDiv);
   });
 };
 
@@ -106,6 +114,7 @@ function populate() {
     url: "/api/ingredients/all",
     data: data
   }).then(function (data) {
+    console.log("test", data);
     for (let i = 0; i < data.length; i++) {
 
       let ingredient = data[i].name;
@@ -123,6 +132,29 @@ function populate() {
       newDiv.append(ingredient);
 
       $("#ing-row").append(newDiv);
+    }
+  })
+}
+
+function populateRec() {
+  var data = {
+    UserId: localStorage.getItem('id')
+  };
+
+  $.ajax({
+    method: "POST",
+    url: "/api/recipes/all",
+    data: data
+  }).then(function (data) {
+    console.log(data);
+    for (let i = 0; i < data.length; i++) {
+      let name = data[i].name;
+      let newDiv = $("<button>");
+      newDiv.attr("id", "recipe-" + i);
+      newDiv.text(data[i].name);
+      newDiv.addClass("recipes");
+      // newDiv.attr("href", )
+      $("#rec-row").append(newDiv);
     }
   })
 }
