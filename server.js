@@ -1,17 +1,22 @@
 var handlebars = require('express-handlebars');
 var fileUpload = require('express-fileupload');
 var express = require('express');
-
+var googleVision = require('./GoogleVisionAPI.js');
 var expressJWT = require("express-jwt");
 var jwt = require("jsonwebtoken");
 
 var app = express();
 var PORT = process.env.PORT || 3300;
 var path = require('path');
-//var db = require('./models');
+var db = require('./models');
 var bp = require('body-parser');
 
 var config = require("./config.js");
+
+// app.use(expressJWT({ secret: config.tokenSecret }).unless({ 
+//   // select paths to not be authorized
+//   path: ["/user/login", "/user/new"] 
+// }));
 
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
@@ -26,46 +31,35 @@ require('./controllers/html-routes')(app);
 // default options
 app.use(fileUpload());
  
-app.post('/upload', function(req, res) {
+app.post('/', function(req, res) {
   if (!req.files) {
     return res.status(400).send('No files were uploaded.');
   }
   var filePath = "/uploadedImages/";
 
-  ingredientImage = req.files.uploadedIngredient;
+  var ingredientImage = req.files.uploadedIngredient;
 
-  ingredientImage.mv(path.join(__dirname, filePath) + ingredientImage.name, function(err) {
+  var image = path.join(__dirname, filePath) + ingredientImage.name;
+  ingredientImage.mv(image, function(err) {
     if (err)
       return res.status(500).send(err);
- 
-    res.send('File uploaded!');
+    googleVision.labelDetection(image, function(data) {
+      var hbsObject = {
+        imageArr : data 
+      }
+      res.render('index', hbsObject);
+    });
   });
-  console.log(req.files.uploadedIngredient)
 });
-
-app.listen(PORT, function () {
-    console.log("Running on port:", PORT);
-});
-
-// db.sequelize.sync().then(function () {
-//     app.listen(PORT, function () {
-//         console.log("Running on port:", PORT);
-//     });
-// });
 
 var router = require('./controllers/appController');
-app.use(router);
-
-app.use(expressJWT({ secret: config.tokenSecret }).unless({ 
-    // select paths to not be authorized
-    path: ["/user/login", "/user/new"] 
-}));
 var routes = require("./controllers/api-routes.js");
 
+app.use(router);
 app.use(routes);
 
 db.sequelize.sync().then(function () {
-    app.listen(PORT, function () {
-        console.log("Running on port:", PORT);
-    });
+     app.listen(PORT, function () {
+         console.log("Running on port:", PORT);
+     });
 });
