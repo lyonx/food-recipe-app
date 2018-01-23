@@ -7,8 +7,15 @@ var router = express.Router();
 // For AJAX request calls
 var request = require("request");
 
-router.post("/api/ingredients", function (routeReq, routeRes) {
+router.post("/api/ingredients/new", function (routeReq, routeRes) {
+  for (let i = 0; i < routeReq.body.ingredients.length; i++) {
+      db.Ingredient.create({
+          name: routeReq.body.ingredients[i]
+      });
+  }
+});  
 
+router.post("/api/ingredients", function (routeReq, routeRes) {
   var ingredients = routeReq.body.ingredients;
   yummlyIngredientSearch(ingredients, routeRes);
 });
