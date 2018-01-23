@@ -130,6 +130,7 @@ function populate() {
 // Remove ingredients inputted by user on click
 
 $(document).on('click', '.ingredients', function () {
+  $(this).remove();
   var data = {
     UserId: localStorage.getItem('id'),
     name: $(this).val()
