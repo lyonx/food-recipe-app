@@ -8,7 +8,7 @@ var jwt = require("jsonwebtoken");
 var app = express();
 var PORT = process.env.PORT || 3300;
 var path = require('path');
-//var db = require('./models');
+var db = require('./models');
 var bp = require('body-parser');
 
 var config = require("./config.js");
@@ -42,16 +42,6 @@ app.post('/upload', function(req, res) {
   });
   console.log(req.files.uploadedIngredient)
 });
-
-app.listen(PORT, function () {
-    console.log("Running on port:", PORT);
-});
-
-// db.sequelize.sync().then(function () {
-//     app.listen(PORT, function () {
-//         console.log("Running on port:", PORT);
-//     });
-// });
 
 var router = require('./controllers/appController');
 app.use(router);
