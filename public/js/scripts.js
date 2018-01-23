@@ -58,7 +58,7 @@ function getResults() {
 };
 
 // Remove ingredients inputted by user on click
-$(document).on('click', '.ingredients', function () {
+$(document).on('click', '.ingredients', function() {
+  console.log('click');
   $(this).remove();
 });
-
