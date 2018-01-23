@@ -31,7 +31,7 @@ router.post("/user/new", function (req, res) {
 router.post("/user/login", function (req, res) {
     db.User.findOne({
         where: {
-            email: req.body.email
+            username: req.body.username
         }
     }).then(function (data) {
         console.log(req.body.password, data.password);
@@ -48,6 +48,7 @@ router.post("/user/login", function (req, res) {
                 res.json({
                     message: "Passwords matched!",
                     successs: true,
+                    user_id: data.id,
                     token: token
                 });
             } else {
@@ -85,9 +86,31 @@ router.post("/api/ingredients", function (req, res) {
     console.log(req.body.ingredients.length);
     for (let i = 0; i < req.body.ingredients.length; i++) {
         db.Ingredient.create({
-            name: req.body.ingredients[i]
+            name: req.body.ingredients[i],
+            UserId: req.body.UserId
         });
     }
+});
+
+router.post("/api/ingredients/all", function (req, res) {
+    db.Ingredient.findAll({
+        where: {
+            UserId: req.body.UserId
+        }
+    }).then(function (data) {
+        res.json(data);
+    });
+});
+
+router.delete("/api/ingredients/delete", function (req, res) {
+    db.Ingredient.destroy({
+        where: {
+            UserId: req.body.UserId,
+            name: req.body.name
+        }
+    }).then(function (data) {
+        res.sendStatus(200);
+    });
 });
 
 module.exports = router;
