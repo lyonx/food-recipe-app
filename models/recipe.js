@@ -22,6 +22,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
+    },
+    imgurl: {
+      type: DataTypes.TEXT,
+      allowNull: false
     }
   });
 
