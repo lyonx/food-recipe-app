@@ -164,12 +164,42 @@ function populateRec() {
     console.log(data);
     for (let i = 0; i < data.length; i++) {
       let name = data[i].name;
-      let newDiv = $("<button>");
-      newDiv.attr("id", "recipe-" + i);
-      newDiv.text(data[i].name);
-      newDiv.addClass("recipes");
+
+      let wrapper = $("<div>");
+      wrapper.addClass("col-md-4");
+
+      let panel = $("<div>");
+      panel.addClass("recipes");
+      panel.addClass("panel panel-default");
+      panel.attr("id", "recipe-" + i);
+
+      var title = $("<div>");
+      title.addClass("panel-heading");
+      title.text(data[i].name);
+
+      panel.append(title);
+
+      var body = $("<div>");
+      body.addClass("panel-body");
+
+      var thumbnail = $("<a>");
+      thumbnail.addClass("thumbnail");
+      var thumb = $("<img>");
+      thumb.attr("src", data[i].imgurl);
+
+      thumbnail.append(thumb);
+
+      var link = $("<a>");
+      link.text("Link");
+      link.addClass("btn btn-primary");
+      link.attr("href", data[i].url);
+
+      body.append(thumbnail);
+      body.append(link);
+      panel.append(body);
+      wrapper.append(panel);
       // newDiv.attr("href", )
-      $("#rec-row").append(newDiv);
+      $("#rec-row").append(wrapper);
     }
   })
 }

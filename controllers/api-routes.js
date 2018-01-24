@@ -93,51 +93,56 @@ router.post('/', function (req, res) {
 function yummlyIngredientSearch(ingredientArr, UserId, routeRes) {
   // To search recipes with associated ingredients
   var allowedIngredients = "";
-  for (var i = 0; i < ingredientArr.length; i++) {
-    allowedIngredients += '&allowedIngredient[]=' + ingredientArr[i];
-  }
-  console.log(allowedIngredients);
+  if (!ingredientArr) {
+    return
+  } else {
+    for (var i = 0; i < ingredientArr.length; i++) {
+      allowedIngredients += '&allowedIngredient[]=' + ingredientArr[i];
+    }
+    console.log(allowedIngredients);
 
-  // Query string to get recipe data associated with ingredients
-  var query = 'http://api.yummly.com/v1/api/recipes?_app_id=' + process.env.app_id +
-    '&_app_key=' + process.env.app_key + allowedIngredients;
-  console.log(query);
-  request(query, function (err, res, bod) {
-    // If the request is successful (i.e. if the response status code is 200)
-    if (!err && res.statusCode === 200) {
-      // Parse JSON response
-      var response = JSON.parse(bod);
-      console.log("res: " + bod);
-      // Matches is an array with last 10 recipe IDs for recipe id GET request
-      var recipeIdArr = [];
-      for (var i = 0; i < 1; i++) {
-        if (response.matches[i]) {
-          recipeIdArr.push(response.matches[i].id);
-        } else {
-          console.log("TEST!");
-          routeRes.sendStatus(404);
+    // Query string to get recipe data associated with ingredients
+    var query = 'http://api.yummly.com/v1/api/recipes?_app_id=' + process.env.app_id +
+      '&_app_key=' + process.env.app_key + allowedIngredients;
+    console.log(query);
+    request(query, function (err, res, bod) {
+      // If the request is successful (i.e. if the response status code is 200)
+      if (!err && res.statusCode === 200) {
+        // Parse JSON response
+        var response = JSON.parse(bod);
+        console.log("res: " + bod);
+        // Matches is an array with last 10 recipe IDs for recipe id GET request
+        var recipeIdArr = [];
+        for (var i = 0; i < 1; i++) {
+          if (response.matches[i]) {
+            recipeIdArr.push(response.matches[i].id);
+          } else {
+            console.log("TEST!");
+            routeRes.sendStatus(404);
+          }
         }
+        console.log(recipeIdArr);
+      } else {
+        // Error 500 - internal server error
+        throw res.statusCode;
       }
-      console.log(recipeIdArr);
-    } else {
-      // Error 500 - internal server error
-      throw res.statusCode;
-    }
 
-    // Arr to store query strings for our recipes GET request later
-    var queryArr = [];
+      // Arr to store query strings for our recipes GET request later
+      var queryArr = [];
 
-    for (var i = 0; i < 1; i++) {
-      var query = 'http://api.yummly.com/v1/api/recipe/' + recipeIdArr[i] + '?_app_id=' +
-        process.env.app_id + '&_app_key=' + process.env.app_key + '&';
-      queryArr.push(query);
-    }
-    console.log(queryArr);
-    yummlyRecipeSearch(queryArr, UserId, routeRes);
-    // yummlyRecipeSearch(queryArr, function(data){
-    //   console.log(data);
-    // });
-  });
+      for (var i = 0; i < 1; i++) {
+        var query = 'http://api.yummly.com/v1/api/recipe/' + recipeIdArr[i] + '?_app_id=' +
+          process.env.app_id + '&_app_key=' + process.env.app_key + '&';
+        queryArr.push(query);
+      }
+      console.log(queryArr);
+      yummlyRecipeSearch(queryArr, UserId, routeRes);
+      // yummlyRecipeSearch(queryArr, function(data){
+      //   console.log(data);
+      // });
+    });
+  }
+
 }
 
 function yummlyRecipeSearch(queryArr, UserId, routeRes) {
@@ -172,7 +177,8 @@ function yummlyRecipeSearch(queryArr, UserId, routeRes) {
               rating: response.rating,
               yummlyId: response.id,
               UserId: UserId,
-              url: response.source.sourceRecipeUrl
+              url: response.source.sourceRecipeUrl,
+              imgurl: response.images[0].hostedMediumUrl
             }).done(function (data) {
               sleep(1000).then(() => {
                 console.log(recipeLinksArr);
