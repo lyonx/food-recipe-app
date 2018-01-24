@@ -3,8 +3,6 @@ var count = 0;
 // on page load
 $(function () {
 
-  
-
   $('#login').on('click', login);
   // if the add ingredient button is hit, adds it to the html
   $('#add-ing').on("click", addIngredient);
@@ -13,10 +11,15 @@ $(function () {
 
   $("#sign-up").on("click", signup);
 
+  $("#sign-out").on("click", signout)
+
   populate();
+
   populateRec();
+
 });
 
+var token = localStorage.getItem('token');
 
 function addIngredient(event) {
   let ingredient = $("#ing").val().trim();
@@ -27,6 +30,9 @@ function addIngredient(event) {
   data.ingredients.push(ingredient);
 
   $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
     method: "POST",
     url: "/api/ingredients",
     data: data
@@ -51,8 +57,11 @@ function getResults() {
   };
 
   console.log(data);
-
+  
   $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
     method: "POST",
     url: "/api/recipes",
     data: data
@@ -81,6 +90,7 @@ function login() {
   }).then(function (data) {
     console.log(data);
     localStorage.setItem('id', data.user_id);
+    localStorage.setItem('token', data.token);
     console.log("id: " + localStorage.getItem('id'));
     window.location.href = "/index";
   });
@@ -88,7 +98,7 @@ function login() {
 
 function signup(event) {
   event.preventDefault();
-  
+
   var data = {
     email: $('#email').val(),
     username: $('#username').val(),
@@ -102,7 +112,7 @@ function signup(event) {
     url: "/user/new",
     data: data
   }).then(function (data) {
-    
+
     login();
   });
 }
@@ -113,6 +123,9 @@ function populate() {
   };
 
   $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
     method: "POST",
     url: "/api/ingredients/all",
     data: data
@@ -145,6 +158,9 @@ function populateRec() {
   };
 
   $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
     method: "POST",
     url: "/api/recipes/all",
     data: data
@@ -162,6 +178,12 @@ function populateRec() {
   })
 }
 
+function signout() {
+  localStorage.clear();
+  token = null;
+  window.location.href = "/";
+}
+
 // Remove ingredients inputted by user on click
 
 $(document).on('click', '.ingredients', function () {
@@ -174,8 +196,7 @@ $(document).on('click', '.ingredients', function () {
     method: "DELETE",
     url: "/api/ingredients/delete",
     data: data
-  }).then(function(data){
+  }).then(function (data) {
     location.reload();
   });
 });
-

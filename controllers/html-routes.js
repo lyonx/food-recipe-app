@@ -6,31 +6,37 @@
 // =============================================================
 var path = require("path");
 
-// Routes
-// =============================================================
-module.exports = function(app) {
 
-  // Each of the below routes just handles the HTML page that the user gets sent to.
 
-  // index route loads view.html
-  app.get("/", function(req, res) {
-    res.render("home");
-  });
+var express = require("express");
+var router = express.Router();
 
-  app.get("/login", function(req, res) {
-    res.render("login");
-  });
+// Each of the below routes just handles the HTML page that the user gets sent to.
 
-  app.get("/index", function(req, res) {
-    res.render("index");
-  });
+// index route loads view.html
+router.get("/", function (req, res) {
+  res.render("home");
+});
 
-  app.get("/signup", function(req, res) {
-    res.render("signup");
-  });
+router.get("/login", function (req, res) {
+  res.render("login");
+});
 
-  app.post("/api", function (req, res) {
-    console.log(req.body);
-    res.json(req.body);
-  });
-};
+router.get("/index", function (req, res) {
+  res.render("index");
+});
+
+router.get("/signup", function (req, res) {
+  res.render("signup");
+});
+
+router.post("/api", function (req, res) {
+  console.log(req.body);
+  res.json(req.body);
+});
+
+router.get("*", function (req, res) {
+  res.render("home");
+});
+
+module.exports = router;

@@ -27,43 +27,26 @@ app.set("view engine", "handlebars");
 
 app.use(express.static("public"));
 
-require('./controllers/html-routes')(app);
+
 // default options
 app.use(fileUpload());
  
-app.post('/', function(req, res) {
-  if (!req.files) {
-    return res.status(400).send('No files were uploaded.');
-  }
-  var filePath = "/uploadedImages/";
 
-  var ingredientImage = req.files.uploadedIngredient;
+var html_routes = require('./controllers/html-routes');
+var api_routes = require("./controllers/api-routes.js");
+var user_routes = require('./controllers/user-routes');
+app.use(user_routes);
+app.use(api_routes);
+app.use(html_routes);
 
-  var image = path.join(__dirname, filePath) + ingredientImage.name;
-  ingredientImage.mv(image, function(err) {
-    if (err)
-      return res.status(500).send(err);
-    googleVision.labelDetection(image, function(data) {
-      var hbsObject = {
-        imageArr : data 
-      }
-      res.render('index', hbsObject);
-    });
-  });
-  console.log(req.files.uploadedIngredient)
-});
+app.use(expressJWT({ secret: config.tokenSecret }).unless({ 
+    // select paths to not be authorized
+    path: ["/user/login", "/user/new", "/login", "/home", "/signup"] 
+}));
 
-var router = require('./controllers/appController');
-app.use(router);
 
-// app.use(expressJWT({ secret: config.tokenSecret }).unless({ 
-//     // select paths to not be authorized
-//     path: ["/user/login", "/user/new", "/api/ingredients/all", "/api/recipes", "/api/recipes/all", "/login", "/signup"] 
-// }));
-var routes = require("./controllers/api-routes.js");
 
-app.use(router);
-app.use(routes);
+
 
 db.sequelize.sync().then(function () {
      app.listen(PORT, function () {
