@@ -170,31 +170,33 @@ function populateRec() {
 
       let panel = $("<div>");
       panel.addClass("recipes");
-      panel.addClass("panel panel-default");
+      panel.addClass("card");
       panel.attr("id", "recipe-" + i);
 
-      var title = $("<div>");
-      title.addClass("panel-heading");
+      var title = $("<h5>");
+      title.addClass("card-title");
       title.text(data[i].name);
 
-      panel.append(title);
+     
 
       var body = $("<div>");
-      body.addClass("panel-body");
+      body.addClass("card-body");
 
-      var thumbnail = $("<a>");
-      thumbnail.addClass("thumbnail");
+      // var thumbnail = $("<a>");
+      // thumbnail.addClass("thumbnail");
       var thumb = $("<img>");
+      thumb.addClass("card-img-top");
       thumb.attr("src", data[i].imgurl);
 
-      thumbnail.append(thumb);
+      // thumbnail.append(thumb);
 
       var link = $("<a>");
       link.text("Link");
       link.addClass("btn btn-primary");
       link.attr("href", data[i].url);
 
-      body.append(thumbnail);
+      panel.append(thumb); 
+      body.append(title);
       body.append(link);
       panel.append(body);
       wrapper.append(panel);
