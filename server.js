@@ -42,7 +42,7 @@ app.use(expressJWT({
   path: ["/user/login", "/user/new", "/login", "/home", "/signup"]
 }));
 
-db.sequelize.sync().then(function () {
+db.sequelize.sync({force: true}).then(function () {
   app.listen(PORT, function () {
     console.log("Running on port:", PORT);
   });
