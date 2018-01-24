@@ -3,38 +3,20 @@ var count = 0;
 // on page load
 $(function () {
 
+  
+
   $('#login').on('click', login);
   // if the add ingredient button is hit, adds it to the html
   $('#add-ing').on("click", addIngredient);
 
   $('#get-results').on("click", getResults);
 
-  // $("#recipe").on("click",)
+  $("#sign-up").on("click", signup);
 
   populate();
   populateRec();
 });
 
-// // adds ingredient to html
-// function addIngredient(event) {
-//   event.preventDefault();
-
-//   let ingredient = $("#ing").val().trim();
-//   console.log(ingredient);
-
-//   let newDiv = $("<button>");
-
-//   newDiv.attr("id", "ingredient-" + count);
-//   newDiv.addClass("ingredients");
-//   newDiv.attr("id", count);
-//   newDiv.attr("value", ingredient);
-
-//   count++;
-
-//   newDiv.append(ingredient);
-
-//   $("#ing-row").append(newDiv);
-// };
 
 function addIngredient(event) {
   let ingredient = $("#ing").val().trim();
@@ -100,7 +82,28 @@ function login() {
     console.log(data);
     localStorage.setItem('id', data.user_id);
     console.log("id: " + localStorage.getItem('id'));
-    window.location.href = "/";
+    window.location.href = "/index";
+  });
+}
+
+function signup(event) {
+  event.preventDefault();
+  
+  var data = {
+    email: $('#email').val(),
+    username: $('#username').val(),
+    password: $('#password').val()
+  };
+
+  console.log(data);
+
+  $.ajax({
+    method: "POST",
+    url: "/user/new",
+    data: data
+  }).then(function (data) {
+    
+    login();
   });
 }
 

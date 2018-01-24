@@ -50,22 +50,16 @@ app.post('/', function(req, res) {
       res.render('index', hbsObject);
     });
   });
-<<<<<<< HEAD
-});
-
-var router = require('./controllers/appController');
-=======
   console.log(req.files.uploadedIngredient)
 });
 
 var router = require('./controllers/appController');
 app.use(router);
 
-app.use(expressJWT({ secret: config.tokenSecret }).unless({ 
-    // select paths to not be authorized
-    path: ["/user/login", "/user/new", "/api/ingredients/all", "/api/recipes", "/api/recipes/all"] 
-}));
->>>>>>> master
+// app.use(expressJWT({ secret: config.tokenSecret }).unless({ 
+//     // select paths to not be authorized
+//     path: ["/user/login", "/user/new", "/api/ingredients/all", "/api/recipes", "/api/recipes/all", "/login", "/signup"] 
+// }));
 var routes = require("./controllers/api-routes.js");
 
 app.use(router);
