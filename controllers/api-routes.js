@@ -1,4 +1,3 @@
-
 var express = require("express");
 var router = express.Router();
 var db = require("../models");
@@ -10,31 +9,45 @@ router.post("/api/ingredients", function (req, res) {
   console.log(req.body);
   console.log(req.body.ingredients.length);
   for (let i = 0; i < req.body.ingredients.length; i++) {
-      db.Ingredient.create({
+    db.Ingredient.findAll({
+      where: {
+        name: req.body.ingredients[i],
+        UserId: req.body.UserId
+      }
+    }).done(function (data) {
+
+      console.log(data.length);
+      if (data.length < 1) {
+        db.Ingredient.create({
           name: req.body.ingredients[i],
           UserId: req.body.UserId
-      });
+        });
+      } else {
+        res.sendStatus(404)
+      }
+    });
+
   }
 });
 
 router.post("/api/ingredients/all", function (req, res) {
   db.Ingredient.findAll({
-      where: {
-          UserId: req.body.UserId
-      }
+    where: {
+      UserId: req.body.UserId
+    }
   }).then(function (data) {
-      res.json(data);
+    res.json(data);
   });
 });
 
 router.delete("/api/ingredients/delete", function (req, res) {
   db.Ingredient.destroy({
-      where: {
-          UserId: req.body.UserId,
-          name: req.body.name
-      }
+    where: {
+      UserId: req.body.UserId,
+      name: req.body.name
+    }
   }).then(function (data) {
-      res.sendStatus(200);
+    res.sendStatus(200);
   });
 });
 
@@ -47,8 +60,7 @@ router.post("/api/recipes", function (routeReq, routeRes) {
 
 router.post("/api/recipes/all", function (routeReq, routeRes) {
   db.Recipe.findAll({
-    where:
-    {
+    where: {
       UserId: routeReq.body.UserId
     }
   }).done(function (data) {
@@ -56,7 +68,7 @@ router.post("/api/recipes/all", function (routeReq, routeRes) {
   });
 });
 
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
   if (!req.files) {
     return res.status(400).send('No files were uploaded.');
   }
@@ -65,12 +77,12 @@ router.post('/', function(req, res) {
   var ingredientImage = req.files.uploadedIngredient;
 
   var image = path.join(__dirname, filePath) + ingredientImage.name;
-  ingredientImage.mv(image, function(err) {
+  ingredientImage.mv(image, function (err) {
     if (err)
       return res.status(500).send(err);
-    googleVision.labelDetection(image, function(data) {
+    googleVision.labelDetection(image, function (data) {
       var hbsObject = {
-        imageArr : data 
+        imageArr: data
       }
       res.render('index', hbsObject);
     });
@@ -95,10 +107,16 @@ function yummlyIngredientSearch(ingredientArr, UserId, routeRes) {
     if (!err && res.statusCode === 200) {
       // Parse JSON response
       var response = JSON.parse(bod);
+      console.log("res: " + bod);
       // Matches is an array with last 10 recipe IDs for recipe id GET request
       var recipeIdArr = [];
       for (var i = 0; i < 1; i++) {
-        recipeIdArr.push(response.matches[i].id);
+        if (response.matches[i]) {
+          recipeIdArr.push(response.matches[i].id);
+        } else {
+          console.log("TEST!");
+          routeRes.sendStatus(404);
+        }
       }
       console.log(recipeIdArr);
     } else {
@@ -137,29 +155,42 @@ function yummlyRecipeSearch(queryArr, UserId, routeRes) {
         recipeLinksArr.push(response.source.sourceRecipeUrl);
         // data.name = response.name;
         // data.url = response.source.sourceRecipeUrl;
+        db.Recipe.findAll({
+          where: {
+            name: response.name,
+            rating: response.rating,
+            yummlyId: response.id,
+            UserId: UserId,
+            url: response.source.sourceRecipeUrl
+          }
+        }).done(function (data) {
+          console.log(data.length);
+          if (data.length < 1) {
 
-        db.Recipe.create({
-          name: response.name,
-          rating: response.rating,
-          yummlyId: response.id,
-          UserId: UserId,
-          url: response.source.sourceRecipeUrl
-        }).done(function(data){
-          routeRes.send(data);
+            db.Recipe.create({
+              name: response.name,
+              rating: response.rating,
+              yummlyId: response.id,
+              UserId: UserId,
+              url: response.source.sourceRecipeUrl
+            }).done(function (data) {
+              sleep(1000).then(() => {
+                console.log(recipeLinksArr);
+                routeRes.json(data);
+              });
+            });
+
+          } else {
+
+            routeRes.send("duplicate recipe found")
+          }
         });
-        // console.log(i, queryArr.length);
-        // if (i === queryArr.length) {
-        //   cb(recipeLinksArr);
-        // }
       }
     });
   }
 
   // Wait 3 seconds for array to populate and then log data
-  sleep(1000).then(() => {
-    console.log(recipeLinksArr);
-    routeRes.json(data);
-  });
+
 }
 
 // Function to 
@@ -169,4 +200,3 @@ function sleep(time) {
 
 
 module.exports = router;
-

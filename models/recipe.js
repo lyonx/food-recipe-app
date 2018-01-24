@@ -17,6 +17,11 @@ module.exports = function (sequelize, DataTypes) {
     url: {
       type: DataTypes.TEXT,
       allowNull: false
+    },
+    favorited: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   });
 
