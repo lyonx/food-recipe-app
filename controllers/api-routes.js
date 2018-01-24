@@ -6,15 +6,39 @@ var router = express.Router();
 var db = require("../models");
 // For AJAX request calls
 var request = require("request");
+var path = require('path');
 
+router.post("/api/ingredients", function (req, res) {
+  console.log(req.body);
+  console.log(req.body.ingredients.length);
+  for (let i = 0; i < req.body.ingredients.length; i++) {
+      db.Ingredient.create({
+          name: req.body.ingredients[i],
+          UserId: req.body.UserId
+      });
+  }
+});
 
-// router.post("/api/ingredients/new", function (routeReq, routeRes) {
-//   for (let i = 0; i < routeReq.body.ingredients.length; i++) {
-//     db.Ingredient.create({
-//       name: routeReq.body.ingredients[i]
-//     });
-//   }
-// });
+router.post("/api/ingredients/all", function (req, res) {
+  db.Ingredient.findAll({
+      where: {
+          UserId: req.body.UserId
+      }
+  }).then(function (data) {
+      res.json(data);
+  });
+});
+
+router.delete("/api/ingredients/delete", function (req, res) {
+  db.Ingredient.destroy({
+      where: {
+          UserId: req.body.UserId,
+          name: req.body.name
+      }
+  }).then(function (data) {
+      res.sendStatus(200);
+  });
+});
 
 router.post("/api/recipes", function (routeReq, routeRes) {
   console.log(routeReq.body);
@@ -34,6 +58,27 @@ router.post("/api/recipes/all", function (routeReq, routeRes) {
   });
 });
 
+router.post('/', function(req, res) {
+  if (!req.files) {
+    return res.status(400).send('No files were uploaded.');
+  }
+  var filePath = "/uploadedImages/";
+
+  var ingredientImage = req.files.uploadedIngredient;
+
+  var image = path.join(__dirname, filePath) + ingredientImage.name;
+  ingredientImage.mv(image, function(err) {
+    if (err)
+      return res.status(500).send(err);
+    googleVision.labelDetection(image, function(data) {
+      var hbsObject = {
+        imageArr : data 
+      }
+      res.render('index', hbsObject);
+    });
+  });
+  console.log(req.files.uploadedIngredient)
+});
 
 function yummlyIngredientSearch(ingredientArr, UserId, routeRes) {
   // To search recipes with associated ingredients
@@ -119,8 +164,6 @@ function yummlyRecipeSearch(queryArr, UserId, routeRes) {
   });
 }
 
-
-
 // Function to 
 function sleep(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
@@ -129,6 +172,3 @@ function sleep(time) {
 
 module.exports = router;
 
-// TESTING
-// var ingredientArr = ["chicken", "pasta"];
-// yummlyIngredientSearch(ingredientArr);
