@@ -57,7 +57,7 @@ function getResults() {
   };
 
   console.log(data);
-  
+  console.log("test");
   $.ajax({
     headers: {
       "Authorization": "Bearer " + token
@@ -67,7 +67,7 @@ function getResults() {
     data: data
   }).done(function (res) {
     console.log(res);
-
+    console.log("test");
     location.reload();
   });
 };
