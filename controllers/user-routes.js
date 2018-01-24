@@ -2,7 +2,6 @@ var express = require("express");
 var db = require("../models");
 var bcrypt = require("bcrypt-nodejs");
 var jwt = require("jsonwebtoken");
-var config = require("../config.js");
 
 var router = express.Router();
 
@@ -45,7 +44,7 @@ router.post("/user/login", function (req, res) {
                 // with a message
                 var token = jwt.sign({
                     email: data.email
-                }, config.tokenSecret);
+                }, process.env.tokenSecret);
                 res.json({
                     message: "Passwords matched!",
                     successs: true,
