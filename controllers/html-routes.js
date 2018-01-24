@@ -14,11 +14,19 @@ module.exports = function(app) {
 
   // index route loads view.html
   app.get("/", function(req, res) {
-    res.render("index");
+    res.render("home");
   });
 
   app.get("/login", function(req, res) {
     res.render("login");
+  });
+
+  app.get("/index", function(req, res) {
+    res.render("index");
+  });
+
+  app.get("/signup", function(req, res) {
+    res.render("signup");
   });
 
   app.post("/api", function (req, res) {
