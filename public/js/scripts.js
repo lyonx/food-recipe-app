@@ -68,16 +68,12 @@ function getResults() {
   }).done(function (res) {
     console.log(res);
 
-    // var newDiv = $("<a>");
-    // newDiv.addClass("recipe");
-    // newDiv.text(res.name);
-    // newDiv.attr("href", res.url);
-    // $("#rec-row").append(newDiv);
+    location.reload();
   });
 };
 
 function login() {
-  event.preventDefault();
+ 
   var data = {
     username: $('#username').val(),
     password: $('#password').val()
@@ -113,7 +109,7 @@ function signup(event) {
     data: data
   }).then(function (data) {
 
-    login();
+    setTimeout(function(){login()}, 1000);
   });
 }
 
