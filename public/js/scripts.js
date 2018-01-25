@@ -9,30 +9,17 @@ $(function () {
 
   $('#get-results').on("click", getResults);
 
+  $("#sign-up").on("click", signup);
+
+  $("#sign-out").on("click", signout)
+
   populate();
+
+  populateRec();
 
 });
 
-// // adds ingredient to html
-// function addIngredient(event) {
-//   event.preventDefault();
-
-//   let ingredient = $("#ing").val().trim();
-//   console.log(ingredient);
-
-//   let newDiv = $("<button>");
-
-//   newDiv.attr("id", "ingredient-" + count);
-//   newDiv.addClass("ingredients");
-//   newDiv.attr("id", count);
-//   newDiv.attr("value", ingredient);
-
-//   count++;
-
-//   newDiv.append(ingredient);
-
-//   $("#ing-row").append(newDiv);
-// };
+var token = localStorage.getItem('token');
 
 function addIngredient(event) {
   let ingredient = $("#ing").val().trim();
@@ -43,6 +30,9 @@ function addIngredient(event) {
   data.ingredients.push(ingredient);
 
   $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
     method: "POST",
     url: "/api/ingredients",
     data: data
@@ -67,18 +57,23 @@ function getResults() {
   };
 
   console.log(data);
-
+  console.log("test");
   $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
     method: "POST",
-    url: "/api/ingredients",
+    url: "/api/recipes",
     data: data
   }).done(function (res) {
     console.log(res);
+    console.log("test");
+    location.reload();
   });
 };
 
 function login() {
-  event.preventDefault();
+ 
   var data = {
     username: $('#username').val(),
     password: $('#password').val()
@@ -91,8 +86,30 @@ function login() {
   }).then(function (data) {
     console.log(data);
     localStorage.setItem('id', data.user_id);
+    localStorage.setItem('token', data.token);
     console.log("id: " + localStorage.getItem('id'));
-    window.location.href = "/";
+    window.location.href = "/ingredients";
+  });
+}
+
+function signup(event) {
+  event.preventDefault();
+
+  var data = {
+    email: $('#email').val(),
+    username: $('#username').val(),
+    password: $('#password').val()
+  };
+
+  console.log(data);
+
+  $.ajax({
+    method: "POST",
+    url: "/user/new",
+    data: data
+  }).then(function (data) {
+
+    setTimeout(function(){login()}, 1000);
   });
 }
 
@@ -102,10 +119,14 @@ function populate() {
   };
 
   $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
     method: "POST",
     url: "/api/ingredients/all",
     data: data
   }).then(function (data) {
+    console.log("test", data);
     for (let i = 0; i < data.length; i++) {
 
       let ingredient = data[i].name;
@@ -114,7 +135,7 @@ function populate() {
       let newDiv = $("<button>");
 
       newDiv.attr("id", "ingredient-" + count);
-      newDiv.addClass("ingredients");
+      newDiv.addClass("ingredients btn btn-primary");
       newDiv.attr("id", count);
       newDiv.attr("value", ingredient);
 
@@ -125,6 +146,69 @@ function populate() {
       $("#ing-row").append(newDiv);
     }
   })
+}
+
+function populateRec() {
+  var data = {
+    UserId: localStorage.getItem('id')
+  };
+
+  $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
+    method: "POST",
+    url: "/api/recipes/all",
+    data: data
+  }).then(function (data) {
+    console.log(data);
+    for (let i = 0; i < data.length; i++) {
+      let name = data[i].name;
+
+      let wrapper = $("<div>");
+      wrapper.addClass("recipes");
+
+      let panel = $("<div>");
+      panel.addClass("card");
+      panel.attr("id", "recipe-" + i);
+
+      var title = $("<h5>");
+      title.addClass("card-title");
+      title.text(data[i].name);
+
+     
+
+      var body = $("<div>");
+      body.addClass("card-body");
+
+      // var thumbnail = $("<a>");
+      // thumbnail.addClass("thumbnail");
+      var thumb = $("<img>");
+      thumb.addClass("card-img-top");
+      thumb.attr("src", data[i].imgurl);
+
+      // thumbnail.append(thumb);
+
+      var link = $("<a>");
+      link.text("Link");
+      link.addClass("btn btn-primary");
+      link.attr("href", data[i].url);
+
+      panel.append(thumb); 
+      body.append(title);
+      body.append(link);
+      panel.append(body);
+      wrapper.append(panel);
+      // newDiv.attr("href", )
+      $("#rec-row").append(wrapper);
+    }
+  })
+}
+
+function signout() {
+  localStorage.clear();
+  token = null;
+  window.location.href = "/";
 }
 
 // Remove ingredients inputted by user on click
@@ -139,8 +223,12 @@ $(document).on('click', '.ingredients', function () {
     method: "DELETE",
     url: "/api/ingredients/delete",
     data: data
+<<<<<<< HEAD
   }).then(function(data){
     //location.reload();
+=======
+  }).then(function (data) {
+    location.reload();
+>>>>>>> master
   });
 });
-
