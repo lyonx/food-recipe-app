@@ -88,7 +88,7 @@ function login() {
     localStorage.setItem('id', data.user_id);
     localStorage.setItem('token', data.token);
     console.log("id: " + localStorage.getItem('id'));
-    window.location.href = "/index";
+    window.location.href = "/ingredients";
   });
 }
 
