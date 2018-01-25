@@ -223,12 +223,7 @@ $(document).on('click', '.ingredients', function () {
     method: "DELETE",
     url: "/api/ingredients/delete",
     data: data
-<<<<<<< HEAD
-  }).then(function(data){
-    //location.reload();
-=======
   }).then(function (data) {
     location.reload();
->>>>>>> master
   });
 });

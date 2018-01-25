@@ -27,41 +27,6 @@ app.use(express.static("public"));
 
 // default options
 app.use(fileUpload());
-<<<<<<< HEAD
- 
-app.post('/', function(req, res) {
-  if (!req.files) {
-    return res.status(400).send('No files were uploaded.');
-  }
-  var filePath = "/uploadedImages/";
-
-  var ingredientImage = req.files.uploadedIngredient;
-
-  var image = path.join(__dirname, filePath) + ingredientImage.name;
-  ingredientImage.mv(image, function(err) {
-    if (err)
-      return res.status(500).send(err);
-    googleVision.labelDetection(image, function(data) {
-      var hbsObject = {
-        imageArr : data 
-      }
-      res.render('index', hbsObject);
-    });
-  });
-});
-
-var router = require('./controllers/appController');
-var routes = require("./controllers/api-routes.js");
-
-app.use(router);
-app.use(routes);
-
-db.sequelize.sync({forece: true}).then(function () {
-     app.listen(PORT, function () {
-         console.log("Running on port:", PORT);
-     });
-});
-=======
 
 var html_routes = require('./controllers/html-routes');
 var api_routes = require("./controllers/api-routes.js");
@@ -82,4 +47,3 @@ db.sequelize.sync({force: false}).then(function () {
     console.log("Running on port:", PORT);
   });
 });
->>>>>>> master
