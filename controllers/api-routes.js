@@ -4,6 +4,7 @@ var db = require("../models");
 // For AJAX request calls
 var request = require("request");
 var path = require('path');
+var googleVision = require('../GoogleVisionAPI.js');
 
 router.post("/api/ingredients", function (req, res) {
   console.log(req.body);
@@ -68,7 +69,7 @@ router.post("/api/recipes/all", function (routeReq, routeRes) {
   });
 });
 
-router.post('/', function (req, res) {
+router.post('/ingredients/image_recognition', function (req, res) {
   if (!req.files) {
     return res.status(400).send('No files were uploaded.');
   }
@@ -84,7 +85,8 @@ router.post('/', function (req, res) {
       var hbsObject = {
         imageArr: data
       }
-      res.render('index', hbsObject);
+      console.log('rendering..');
+      res.render('ingredientsImageRec', hbsObject);
     });
   });
   console.log(req.files.uploadedIngredient)

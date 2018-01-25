@@ -26,6 +26,11 @@ router.get("/ingredients", function (req, res) {
   res.render("ingredients");
 });
 
+router.get("/ingredients/image_recognition", function (req, res) {
+  console.log('render');
+  res.render("ingredientsImageRec");
+});
+
 router.get("/signup", function (req, res) {
   res.render("signup");
 });
