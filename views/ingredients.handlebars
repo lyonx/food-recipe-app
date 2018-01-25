@@ -1,0 +1,40 @@
+<!-- Navigation -->
+<nav class="navbar navbar-light bg-light static-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Lazyfood</a>
+        <a class="btn btn-primary" href="/" id="sign-out">Sign Out</a>
+    </div>
+</nav>
+
+<div class="row" id="ingredient-form-container">
+    <div class="col"></div>
+    <div class="col-8">
+        <form class="form-inline" >
+            <div class="form-group" id="ingredient-form"> 
+                {{!--
+                <label for="exampleInputName2"></label> --}}
+                <input type="text" class="form-control" id="ing" placeholder="Ingredient">
+                <button type="submit" class="btn btn-primary" id="add-ing">Add ingredient</button>
+                <button type="submit" class="btn btn-warning" id="get-results">Get Recipes</button>
+            </div>
+
+        </form>
+    </div>
+    <div class="col"></div>
+</div>
+
+
+<div class="row" id="ingredient-tracker">
+    <div class="col"></div>
+    <div class="col-8" id="ing-row">
+    </div>
+    <div class="col"></div>
+</div>
+
+<div class="row" id="recipe-tracker">
+    <div class="col"></div>
+    <div class="col-10" id="rec-row"></div>
+    <div class="col"></div>
+</div>
+
+

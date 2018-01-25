@@ -88,7 +88,7 @@ function login() {
     localStorage.setItem('id', data.user_id);
     localStorage.setItem('token', data.token);
     console.log("id: " + localStorage.getItem('id'));
-    window.location.href = "/index";
+    window.location.href = "/ingredients";
   });
 }
 
@@ -135,7 +135,7 @@ function populate() {
       let newDiv = $("<button>");
 
       newDiv.attr("id", "ingredient-" + count);
-      newDiv.addClass("ingredients");
+      newDiv.addClass("ingredients btn btn-primary");
       newDiv.attr("id", count);
       newDiv.attr("value", ingredient);
 
@@ -166,10 +166,9 @@ function populateRec() {
       let name = data[i].name;
 
       let wrapper = $("<div>");
-      wrapper.addClass("col-md-4");
+      wrapper.addClass("recipes");
 
       let panel = $("<div>");
-      panel.addClass("recipes");
       panel.addClass("card");
       panel.attr("id", "recipe-" + i);
 
