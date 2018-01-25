@@ -3,6 +3,10 @@ var count = 0;
 // on page load
 $(function () {
 
+  populate();
+
+  populateRec();
+
   $('#login').on('click', login);
   // if the add ingredient button is hit, adds it to the html
   $('#add-ing').on("click", addIngredient);
@@ -11,17 +15,16 @@ $(function () {
 
   $("#sign-up").on("click", signup);
 
-  $("#sign-out").on("click", signout)
+  $("#sign-out").on("click", signout);
 
-  populate();
-
-  populateRec();
+  $("#unfav").on("click", unfav);
 
 });
 
 var token = localStorage.getItem('token');
 
 function addIngredient(event) {
+  event.preventDefault();
   let ingredient = $("#ing").val().trim();
   var data = {
     UserId: localStorage.getItem('id'),
@@ -38,10 +41,12 @@ function addIngredient(event) {
     data: data
   }).done(function (res) {
     console.log(res);
+    console.log("test0");
   });
+  location.reload();
 }
 
-function getResults() {
+function getResults(event) {
   event.preventDefault();
 
   var data = {
@@ -73,7 +78,7 @@ function getResults() {
 };
 
 function login() {
- 
+
   var data = {
     username: $('#username').val(),
     password: $('#password').val()
@@ -109,7 +114,9 @@ function signup(event) {
     data: data
   }).then(function (data) {
 
-    setTimeout(function(){login()}, 1000);
+    setTimeout(function () {
+      login()
+    }, 1000);
   });
 }
 
@@ -176,7 +183,7 @@ function populateRec() {
       title.addClass("card-title");
       title.text(data[i].name);
 
-     
+
 
       var body = $("<div>");
       body.addClass("card-body");
@@ -187,16 +194,42 @@ function populateRec() {
       thumb.addClass("card-img-top");
       thumb.attr("src", data[i].imgurl);
 
-      // thumbnail.append(thumb);
+      console.log(data[i].favorited);
 
       var link = $("<a>");
       link.text("Link");
       link.addClass("btn btn-primary");
       link.attr("href", data[i].url);
 
-      panel.append(thumb); 
+
+
+      panel.append(thumb);
       body.append(title);
       body.append(link);
+      // thumbnail.append(thumb);
+      if (!data[i].favorited) {
+        var fav = $("<button>");
+        fav.attr("id", "fav");
+        fav.addClass("btn btn-secondary");
+        fav.text("Add Favorite");
+        // fav.attr("data-id", data[i].id);
+        fav.val(data[i].id);
+        body.append(fav);
+      } else {
+        var unfav = $("<button>");
+        unfav.attr("id", "unfav");
+        unfav.addClass("btn btn-success");
+        unfav.text("Favorited");
+        // unfav.attr("data-id", data[i].id);
+        unfav.val(data[i].id);
+        body.append(unfav);
+      }
+      var del = $("<button>");
+      del.addClass("btn btn-danger");
+      del.attr("id", "rec-del");
+      del.text("X");
+      del.val(data[i].id);
+      body.append(del);
       panel.append(body);
       wrapper.append(panel);
       // newDiv.attr("href", )
@@ -211,6 +244,13 @@ function signout() {
   window.location.href = "/";
 }
 
+function fav() {
+  console.log("test");
+}
+
+function unfav() {
+  console.log(this.val());
+}
 // Remove ingredients inputted by user on click
 
 $(document).on('click', '.ingredients', function () {
@@ -224,6 +264,51 @@ $(document).on('click', '.ingredients', function () {
     url: "/api/ingredients/delete",
     data: data
   }).then(function (data) {
+    location.reload();
+  });
+});
+
+$(document).on("click", "#fav", function () {
+
+  let id = $(this).val();
+
+  $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
+    method: "POST",
+    url: "/api/recipes/favorite/" + id
+  }).done(function (data) {
+    location.reload();
+  });
+});
+
+$(document).on("click", "#unfav", function () {
+
+  let id = $(this).val();
+
+  $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
+    method: "POST",
+    url: "/api/recipes/unfavorite/" + id
+  }).done(function (data) {
+    location.reload();
+  });
+});
+
+$(document).on("click", "#rec-del", function () {
+
+  let id = $(this).val();
+
+  $.ajax({
+    headers: {
+      "Authorization": "Bearer " + token
+    },
+    method: "DELETE",
+    url: "/api/recipes/remove/" + id
+  }).done(function (data) {
     location.reload();
   });
 });

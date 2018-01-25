@@ -12,6 +12,10 @@ h6 {
   font-weight: 700;
 }
 
+#fav,#rec-del, #unfav {
+  float: right;
+}
+
 header.masthead {
   position: relative;
   background-color: #343a40;
@@ -166,12 +170,12 @@ footer.footer {
 #recipe-tracker {
   margin-bottom: 20px;
 }
-.recipes {
+/* .recipes {
   width: 32.5%;
   margin-left: 2px;
   margin-right: 2px;
   display: inline-block;
-}
+} */
 
 
 /* ******** LOGIN FORM STYLING ******** */
