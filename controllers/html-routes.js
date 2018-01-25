@@ -22,8 +22,8 @@ router.get("/login", function (req, res) {
   res.render("login");
 });
 
-router.get("/index", function (req, res) {
-  res.render("index");
+router.get("/ingredients", function (req, res) {
+  res.render("ingredients");
 });
 
 router.get("/signup", function (req, res) {
