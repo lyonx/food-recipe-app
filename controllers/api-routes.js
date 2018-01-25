@@ -69,7 +69,45 @@ router.post("/api/recipes/all", function (routeReq, routeRes) {
   });
 });
 
+
+router.post("/api/recipes/favorite/:id", function (req, res) {
+  db.Recipe.update({
+    favorited: true
+  }, {
+    where: {
+      id: req.params.id
+    }
+  }).done(function (data) {
+    res.json(data);
+  });
+});
+
+router.post("/api/recipes/unfavorite/:id", function (req, res) {
+  db.Recipe.update({
+    favorited: false
+  }, {
+    where: {
+      id: req.params.id
+    }
+  }).done(function (data) {
+    res.json(data);
+  });
+});
+
+router.delete("/api/recipes/remove/:id", function (req, res) {
+  db.Recipe.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).done(function (data) {
+    res.json(data);
+  });
+});
+
+router.post('/', function (req, res) {
+
 router.post('/ingredients/image_recognition', function (req, res) {
+
   if (!req.files) {
     return res.status(400).send('No files were uploaded.');
   }
