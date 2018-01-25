@@ -4,7 +4,7 @@ var express = require('express');
 var googleVision = require('./GoogleVisionAPI.js');
 var expressJWT = require("express-jwt");
 var jwt = require("jsonwebtoken");
-require("dotenv").config();
+// require("dotenv").config();
 
 var app = express();
 var PORT = process.env.PORT || 3300;
