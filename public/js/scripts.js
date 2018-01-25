@@ -140,7 +140,7 @@ $(document).on('click', '.ingredients', function () {
     url: "/api/ingredients/delete",
     data: data
   }).then(function(data){
-    location.reload();
+    //location.reload();
   });
 });
 

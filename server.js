@@ -50,28 +50,15 @@ app.post('/', function(req, res) {
       res.render('index', hbsObject);
     });
   });
-<<<<<<< HEAD
 });
 
 var router = require('./controllers/appController');
-=======
-  console.log(req.files.uploadedIngredient)
-});
-
-var router = require('./controllers/appController');
-app.use(router);
-
-app.use(expressJWT({ secret: config.tokenSecret }).unless({ 
-    // select paths to not be authorized
-    path: ["/user/login", "/user/new", "/api/ingredients/all"] 
-}));
->>>>>>> master
 var routes = require("./controllers/api-routes.js");
 
 app.use(router);
 app.use(routes);
 
-db.sequelize.sync().then(function () {
+db.sequelize.sync({forece: true}).then(function () {
      app.listen(PORT, function () {
          console.log("Running on port:", PORT);
      });
